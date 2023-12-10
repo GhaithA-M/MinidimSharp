@@ -1,0 +1,6 @@
+<UserControl x:Class="MinidimSharp.Category9"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Height="Auto" Width="Auto">
+    <!-- Add UI elements specific to Category 9 here -->
+</UserControl>
