@@ -8,5 +8,7 @@ namespace MinidimSharp
         {
             InitializeComponent();
         }
+    
+        // Add methods and logic for Category 5
     }
 }

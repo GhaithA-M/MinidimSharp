@@ -1,4 +1,3 @@
-using System.Windows;
 using System.Windows.Controls;
 
 namespace MinidimSharp
@@ -10,5 +9,6 @@ namespace MinidimSharp
             InitializeComponent();
         }
 
+        // Add methods and logic for Category 5
     }
 }
