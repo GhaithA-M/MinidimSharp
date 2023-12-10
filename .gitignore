@@ -1,3 +1,6 @@
+bin
+obj
+MinidimSharp.sln
 bin\Debug\net7.0-windows\MinidimSharp.pdb
 bin\Debug\net7.0-windows\MinidimSharp.dll
 obj\Debug\net7.0-windows\categories\Category1.baml
@@ -12,7 +15,9 @@ obj\Debug\net7.0-windows\categories\Category8.g.cs
 obj\Debug\net7.0-windows\categories\Category9.g.cs
 obj\Debug\net7.0-windows\MainWindow.baml
 obj\Debug\net7.0-windows\MainWindow.g.cs
+obj\Debug\net7.0-windows\MinidimSharp.deps.json
 obj\Debug\net7.0-windows\MinidimSharp.dll
+obj\Debug\net7.0-windows\MinidimSharp.exe
 obj\Debug\net7.0-windows\MinidimSharp.g.resources
 obj\Debug\net7.0-windows\MinidimSharp.pdb
 obj\Debug\net7.0-windows\MinidimSharp_MarkupCompile.cache
