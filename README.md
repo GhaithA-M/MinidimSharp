@@ -23,10 +23,11 @@
 6:	Udregn nødvendig kontinuerlig strømværdi for kablet
 
 
-7:	Bestem belastningsgrad:
+7:	Bestem belastningsgrad
 
 
 8:	Kontrol af betingelse 1
 
 
 9:	Evt. Kontrol af KB og spændingsfald
+

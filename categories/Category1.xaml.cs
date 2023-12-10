@@ -53,13 +53,13 @@ namespace MinidimSharp
                 {
                     switch (unitComboBox.SelectedIndex)
                     {
-                        case 0: // Amps
+                        case 0: // Ampere
                             total += value;
                             break;
-                        case 1: // Ohms
+                        case 1: // Ohm
                             total += 1 / value;
                             break;
-                        case 2: // Watts
+                        case 2: // Watt
                             total += Math.Sqrt(value);
                             break;
                     }
