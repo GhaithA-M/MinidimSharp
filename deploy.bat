@@ -20,7 +20,7 @@ git tag -a %tagName% -m "MinidimSharp %tagName%"
 
 REM Push changes and tag
 git push origin main
-git push origin %tagName%
+git push origin "MinidimSharp %tagName%"
 
 echo Deployment and tagging complete.
 pause

@@ -21,11 +21,17 @@ jobs:
     - name: Build Solution
       run: dotnet build MinidimSharp.sln --configuration Release
 
+    - name: Archive Production Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: my-artifact
+        path: bin/Release/net7.0-windows/*
+
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
         name: ${{ github.ref_name }}  # Use the tag name as the release name
         tag_name: ${{ github.ref_name }}
-        files: bin\Release\net7.0-windows\
+        files: bin/Release/net7.0-windows/*  # Use forward slashes and include all files in the directory
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
