@@ -16,7 +16,7 @@ SET /P commitMessage="Enter your commit message: "
 git commit -m "%commitMessage%"
 
 REM Create a new tag
-git tag -a %versionNumber% -m %tagName%
+git tag -a %tagName% -m "MinidimSharp v%versionNumber%"
 
 REM Push changes and tag
 git push origin main
