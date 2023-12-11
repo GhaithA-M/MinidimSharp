@@ -1,13 +1,13 @@
-name: .NET Build
+name: .NET Build and Release
 
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    tags:
+      - 'draft'  # Trigger the workflow when you push this tag
 
 jobs:
-  build:
+  build-and-release:
     runs-on: windows-latest
 
     steps:
@@ -20,4 +20,14 @@ jobs:
         dotnet-version: '6.0.417'
 
     - name: Build Solution
-      run: dotnet build MinidimSharp.sln --configuration Debug
+      run: dotnet build MinidimSharp.sln --configuration Release
+
+      - name: Create Release
+      if: github.ref == 'refs/tags/draft'
+      uses: softprops/action-gh-release@v1
+      with:
+        name: 'MinidimSharp v0.2'  # Manually setting release name
+        tag_name: ${{ github.ref }}
+        files: bin\Release\net7.0-windows\
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
