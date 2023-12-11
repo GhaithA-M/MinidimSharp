@@ -17,9 +17,9 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x  # Adjust the .NET version as necessary
+        dotnet-version: 7.0
 
     - name: Build Solution
-      run: dotnet build ${{ env.Solution_Name }} --configuration Release
+      run: dotnet build ${{ env.Solution_Name }}
       env:
-        Solution_Name: MinidimSharp.sln  # Replace with the name of your solution file
+        Solution_Name: MinidimSharp.sln
