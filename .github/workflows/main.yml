@@ -2,8 +2,8 @@ name: .NET Build and Release
 
 on:
   push:
-    tags:
-      - 'v*'  # Trigger the workflow when you push tags like v0.1, v0.2, etc.
+    branches:
+      - main  # Trigger the workflow on push events to the main branch
 
 jobs:
   build-and-release:
