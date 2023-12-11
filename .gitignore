@@ -1,4 +1,5 @@
 .gitignore
+deploy.bat
 bin\Debug\net7.0-windows\MinidimSharp.deps.json
 bin\Debug\net7.0-windows\MinidimSharp.dll
 bin\Debug\net7.0-windows\MinidimSharp.exe
