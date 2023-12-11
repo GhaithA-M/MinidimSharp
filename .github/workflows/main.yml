@@ -6,7 +6,7 @@ permissions:
 on:
   push:
     branches:
-      - MinidimSharp  # Trigger the workflow on push events to the main branch
+      - main  # Trigger the workflow on push events to the main branch
 
 jobs:
   build-and-release:
