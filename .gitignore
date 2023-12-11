@@ -1,6 +1,5 @@
 bin
 obj
-MinidimSharp.sln
 bin\Debug\net7.0-windows\MinidimSharp.pdb
 bin\Debug\net7.0-windows\MinidimSharp.dll
 obj\Debug\net7.0-windows\categories\Category1.baml
