@@ -19,7 +19,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0.417'
+        dotnet-version: '7.0'
 
     - name: Build Solution
       run: dotnet build MinidimSharp.sln --configuration Release
@@ -28,15 +28,11 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: MinidimSharp
-        path: 
-          bin/Release/net7.0-windows/MinidimSharp.deps
-          bin/Release/net7.0-windows/MinidimSharp.dll
-          bin/Release/net7.0-windows/MinidimSharp.exe
-          bin/Release/net7.0-windows/MinidimSharp.pdb
-          bin/Release/net7.0-windows/MinidimSharp.runtimeconfig.json
+        path: bin/Release/net7.0-windows/*
+
     - name: Create Zip
       run: |
-        Compress-Archive -Path bin/Release/net7.0-windows/* -DestinationPath MinidimSharp.zip
+        Compress-Archive -Path bin/Release/net6.0-windows/* -DestinationPath MinidimSharp.zip
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
