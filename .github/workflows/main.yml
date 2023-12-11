@@ -23,4 +23,4 @@ jobs:
       run: ls -la
 
     - name: Build Solution
-      run: dotnet build MinidimSharp.sln --configuration Debug
+      run: dotnet build MinidimSharp.sln
