@@ -22,7 +22,7 @@ jobs:
     - name: Build Solution
       run: dotnet build MinidimSharp.sln --configuration Release
 
-      - name: Create Release
+    - name: Create Release
       if: github.ref == 'refs/tags/draft'
       uses: softprops/action-gh-release@v1
       with:
