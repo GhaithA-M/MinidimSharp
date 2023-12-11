@@ -6,7 +6,7 @@ permissions:
 on:
   push:
     branches:
-      - main  # Trigger the workflow on push events to the main branch
+      - MinidimSharp  # Trigger the workflow on push events to the main branch
 
 jobs:
   build-and-release:
@@ -28,8 +28,12 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: MinidimSharp
-        path: bin/Release/net7.0-windows/*
-
+        path: 
+          bin/Release/net7.0-windows/MinidimSharp.deps
+          bin/Release/net7.0-windows/MinidimSharp.dll
+          bin/Release/net7.0-windows/MinidimSharp.exe
+          bin/Release/net7.0-windows/MinidimSharp.pdb
+          bin/Release/net7.0-windows/MinidimSharp.runtimeconfig.json
     - name: Create Zip
       run: |
         Compress-Archive -Path bin/Release/net7.0-windows/* -DestinationPath MinidimSharp.zip

@@ -54,3 +54,8 @@ obj\MinidimSharp.csproj.nuget.g.props
 obj\MinidimSharp.csproj.nuget.g.targets
 obj\project.assets.json
 obj\project.nuget.cachedeploy.bat 
+obj\project.nuget.cache
+obj\project.assets.json
+obj\MinidimSharp.csproj.nuget.g.targets
+obj\MinidimSharp.csproj.nuget.g.props
+obj\MinidimSharp.csproj.nuget.dgspec.json
