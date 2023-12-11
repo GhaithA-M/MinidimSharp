@@ -24,18 +24,17 @@ jobs:
     - name: Archive Production Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: my-artifact
+        name: MinidimSharp
         path: bin/Release/net7.0-windows/*
 
     - name: Create Zip
       run: |
-        Compress-Archive -Path bin/Release/net7.0-windows/* -DestinationPath my-artifact.zip
+        Compress-Archive -Path bin/Release/net7.0-windows/* -DestinationPath MinidimSharp.zip
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
         name: ${{ github.ref_name }}
         tag_name: ${{ github.ref_name }}
-        files: ./my-artifact.zip
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.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 }}
