@@ -8,7 +8,7 @@ IF "%versionNumber%"=="" (
 )
 
 REM Set tag name
-SET tagName=v%versionNumber%
+SET tagName=MinidimSharp_v%versionNumber%
 
 REM Commit changes
 git add .
@@ -16,11 +16,11 @@ SET /P commitMessage="Enter your commit message: "
 git commit -m "%commitMessage%"
 
 REM Create a new tag
-git tag -a %tagName% -m "MinidimSharp %tagName%"
+git tag -a %versionNumber% -m %tagName%
 
 REM Push changes and tag
 git push origin main
-git push origin "MinidimSharp %tagName%"
+git push origin %tagName%
 
 echo Deployment and tagging complete.
 pause
