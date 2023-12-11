@@ -1,5 +1,5 @@
 @echo off
-SET /P versionNumber="Enter the new version number (0.x): "
+SET /P versionNumber="Enter the new version number (v0.#): "
 
 REM Check if version number is provided
 IF "%versionNumber%"=="" (
