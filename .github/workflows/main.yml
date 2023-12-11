@@ -1,25 +1,24 @@
-name: .NET Build
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
-    - name: Setup .NET
+    - name: Set up .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0
+        dotnet-version: '7.x'
+        include-prerelease: false
 
-    - name: Build Solution
-      run: dotnet build ${{ env.Solution_Name }}
-      env:
-        Solution_Name: MinidimSharp.sln
+    - name: Build with dotnet
+      run: dotnet build --configuration Debug
+
+    - name: dotnet publish
+      run: dotnet publish -c Release -o "${{env.GITHUB_WORKSPACE}}\MinidimSharp"
+
+    - name: Upload artifact for deployment job
+      uses: actions/upload-artifact@v3
+      with:
+        name: .net-app
+        path: ${{env.GITHUB_WORKSPACE}}\MinidimSharp
