@@ -17,7 +17,10 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0'
+        dotnet-version: '6.0.417'
+
+    - name: List files in repository
+      run: ls -la
 
     - name: Build Solution
       run: dotnet build MinidimSharp.sln --configuration Debug
