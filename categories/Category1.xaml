@@ -14,7 +14,7 @@
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <UniformGrid x:Name="LoadEntriesPanel" Rows="5" Columns="4">
                 <!-- Load entries will be added here [A] [Ω] [W] -->
-                <!-- Each entry should be wrapped with a Border for the dark lines -->
+                <!-- Each entry should be wrapped with a border for the dark lines -->
                 <!-- <Border BorderBrush="DarkGray" BorderThickness="1"> -->
                 <!--     <YourItem /> -->
                 <!-- </Border> -->

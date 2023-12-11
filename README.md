@@ -1,7 +1,7 @@
 # MinidimSharp
- MinidimSharp er et værktøj til maskinmestre under uddannelse. Bruges til at dimensionere ledere med udgangspunkt i DS-60364.
+ MinidimSharp er et værktøj til at dimensionere elektriske installationer med udgangspunkt i DS/HD 60364-serien: "Standardsamling til installationsbekendtgørelsen".
  
- -----------------------------------------------------------------------------------------------------
+ ---------------------------------------------------------------------------
  
 ![image](https://github.com/GhaithA-M/MinidimSharp/assets/122114790/db726b58-9d16-40ba-ab45-5c7f8b3b5cd1)
 
