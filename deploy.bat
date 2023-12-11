@@ -1,5 +1,5 @@
 @echo off
-SET /P versionNumber="Enter the new version number (v0.#): "
+SET /P versionNumber="Enter the version number [0.#]: "
 
 REM Check if version number is provided
 IF "%versionNumber%"=="" (
@@ -16,7 +16,7 @@ SET /P commitMessage="Enter your commit message: "
 git commit -m "%commitMessage%"
 
 REM Create a new tag
-git tag -a v%tagName% -m "MinidimSharp v%tagName%"
+git tag -a %tagName% -m "MinidimSharp %tagName%"
 
 REM Push changes and tag
 git push origin main
