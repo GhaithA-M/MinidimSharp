@@ -3,7 +3,7 @@
  
  ---------------------------------------------------------------------------
  
-![image](https://github.com/GhaithA-M/MinidimSharp/assets/122114790/db726b58-9d16-40ba-ab45-5c7f8b3b5cd1)
+![image](https://github.com/GhaithA-M/MinidimSharp/assets/122114790/cb2753aa-910d-4bf3-a107-2b72fbe8246d)
 
 1:	Udregn belastningsstrøm: (Dimensioneringsstrøm)
 
