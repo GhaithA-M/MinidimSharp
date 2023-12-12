@@ -1,2 +1,2 @@
-git push --delete origin refs/heads/main
-git tag --delete refs/heads/main
+git push --delete origin heads/heads/main
+git tag --delete heads/heads/main
