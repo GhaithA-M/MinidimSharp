@@ -32,10 +32,13 @@ jobs:
 
     - name: Create Zip
       run: |
-        Compress-Archive -Path bin/Release/net7.0-windows/* -DestinationPath MinidimSharp.zip
+        Compress-Archive -Path bin/Release/net7.0-windows/*
+        -DestinationPath MinidimSharp.zip
 
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: MinidimSharp.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.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 }}
