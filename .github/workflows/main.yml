@@ -39,5 +39,6 @@ jobs:
       with:
         name: ${{ github.ref_name }}
         tag_name: ${{ github.ref_name }}
+        files: MinidimSharp.zip
       env:
         GITHUB_TOKEN: ${{ secrets.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 }}
