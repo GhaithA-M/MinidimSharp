@@ -40,4 +40,4 @@ jobs:
       with:
         files: ${{ github.event.repository.name }}.zip
       env:
-        GITHUB_TOKEN: ${{ secrets.secrets.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 }}
+        GITHUB_TOKEN: ${{ secrets.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 }}
