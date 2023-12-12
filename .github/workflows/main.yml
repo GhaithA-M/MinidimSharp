@@ -39,5 +39,5 @@ jobs:
       with:
         name: ${{ github.ref_name }}
         tag_name: ${{ github.ref_name }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.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 }}
+        files: | # Filepath to your .zip file
+          bin/Release/net7.0-windows/*.zip

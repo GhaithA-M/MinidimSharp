@@ -2,25 +2,37 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Height="Auto" Width="Auto"
-             Background="#000000">
+             Background="#818589">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Content="Tilføj Forbruger / Belastning" Click="AddLoad_Click"/>
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Button Content="Tilføj Forbruger / Belastning" Click="AddLoad_Click"/>
+            <Button Content="Fjern Seneste Belastning" Click="RemoveLoad_Click"/>
+            <Label x:Name="LoadCounter" Content="0/20"/>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <UniformGrid x:Name="LoadEntriesPanel" Rows="5" Columns="4">
-                <!-- Load entries will be added here [A] [Ω] [W] -->
-                <!-- Each entry should be wrapped with a border for the dark lines -->
-                <!-- <Border BorderBrush="DarkGray" BorderThickness="1"> -->
-                <!--     <YourItem /> -->
-                <!-- </Border> -->
             </UniformGrid>
         </ScrollViewer>
-        <Label Grid.Row="2" Content="Samlet Værdi [A]:"/>
-        <TextBox Grid.Row="3" x:Name="Result"/>
+        <Label Grid.Row="3" Content="Samlet Værdi [A]:"/>
+        <TextBox Grid.Row="3" Grid.Column="1" x:Name="Result"/>
+        <Label Grid.Row="5" Content="Input Voltage:"/>
+        <TextBox Grid.Row="5" Grid.Column="1" x:Name="VoltageTextBox"/>
+        <Label Grid.Row="7" Content="Calculated Voltage:"/>
+        <TextBox Grid.Row="7" Grid.Column="1" x:Name="CalculatedVoltageTextBox" IsReadOnly="True" />
     </Grid>
 </UserControl>
