@@ -38,6 +38,4 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: ${{ github.event.repository.name }}.zip
-      env:
-        GITHUB_TOKEN: ${{ secrets.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 }}
+        files: MinidimSharp.zip
