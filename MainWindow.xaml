@@ -2,34 +2,64 @@
         xmlns:local="clr-namespace:MinidimSharp"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MinidimSharp 0.1 | GAM © 2023" Width="1181" Height="486">
-    <TabControl>
-        <TabItem Header="1) Udregn belastningsstrøm">
-            <local:Category1 />
-        </TabItem>
-        <TabItem Header="2) Vælg OB / KB">
-            <local:Category2 />
-        </TabItem>
-        <TabItem Header="3) Fastlæg installationsmetode">
-            <local:Category3 />
-        </TabItem>
-        <TabItem Header="4) Fastlæg temperaturkoefficient">
-            <local:Category4 />
-        </TabItem>
-        <TabItem Header="5) Fastlæg samlet fremføring">
-            <local:Category5 />
-        </TabItem>
-        <TabItem Header="6) Udregn nødvendig kontinuerlig strømværdi for kablet">
-            <local:Category6 />
-        </TabItem>
-        <TabItem Header="7) Bestem belastningsgrad">
-            <local:Category7 />
-        </TabItem>
-        <TabItem Header="8) Kontrol af betingelse 1">
-            <local:Category8 />
-        </TabItem>
-        <TabItem Header="9) Kontrol af KB og spændingsfald">
-            <local:Category9 />
-        </TabItem>
-    </TabControl>
+        Title="MinidimSharp 0.2 | GAM © 2023" Width="1181" Height="486"
+        ResizeMode="NoResize"
+        Icon="logo.ico"> <!-- W:1181px H:486px -->
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Space for the Menu -->
+            <RowDefinition Height="*"/>   <!-- Remaining space for TabControl -->
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New" Click="NewFile_Click"/>
+                <MenuItem Header="Save _As" Click="SaveAsFile_Click"/>
+                <MenuItem Header="_Load" Click="LoadFile_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <ContentControl x:Name="MainContent" Grid.Row="1"/>
+
+        <TabControl Grid.Row="2">
+            <TabItem Header="1) Udregn belastningsstrøm">
+                <local:Category1 />
+            </TabItem>
+
+            <TabItem Header="2) Vælg OB / KB">
+                <local:Category2 />
+            </TabItem>
+
+            <TabItem Header="3) Fastlæg installationsmetode">
+                <local:Category3 />
+            </TabItem>
+
+            <TabItem Header="4) Fastlæg temperaturkoefficient">
+                <local:Category4 />
+            </TabItem>
+
+            <TabItem Header="5) Fastlæg samlet fremføring">
+                <local:Category5 />
+            </TabItem>
+
+            <TabItem Header="6) Udregn nødvendig kontinuerlig strømværdi for kablet">
+                <local:Category6 />
+            </TabItem>
+
+            <TabItem Header="7) Bestem belastningsgrad">
+                <local:Category7 />
+            </TabItem>
+
+            <TabItem Header="8) Kontrol af betingelse 1">
+                <local:Category8 />
+            </TabItem>
+
+            <TabItem Header="9) Kontrol af KB og spændingsfald">
+                <local:Category9 />
+            </TabItem>
+        </TabControl>
+
+    </Grid>
 </Window>
