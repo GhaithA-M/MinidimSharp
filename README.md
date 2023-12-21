@@ -31,9 +31,7 @@
 
 9:	Evt. Kontrol af KB og spændingsfald
 
-
  ---------------------------------------------------------------------------
-
 
 Trin 1: Design af brugergrænseflade
 

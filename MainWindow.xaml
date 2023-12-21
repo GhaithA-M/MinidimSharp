@@ -3,8 +3,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MinidimSharp 0.2 | GAM © 2023" Width="1181" Height="486"
-        ResizeMode="NoResize"
-        Icon="logo.ico"> <!-- W:1181px H:486px -->
+        ResizeMode="NoResize"> <!-- W:1181px H:486px -->
 
     <Grid>
 
