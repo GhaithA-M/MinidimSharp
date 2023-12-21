@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
@@ -41,4 +41,4 @@ jobs:
         tag_name: ${{ github.ref_name }}
         files: MinidimSharp.zip
       env:
-        GITHUB_TOKEN: ${{ secrets.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 }}
+        GITHUB_TOKEN: ${{ secrets.MINIDIMSHARP_SECRET }}
