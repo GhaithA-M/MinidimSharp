@@ -1,9 +1,9 @@
 .gitignore
 deploy.bat
 cleartags.bat
-images\logo256x256.png
-images\logo256x256.psd
-images\image.png
+images\Tabel.png
+images\MinidimSharp Logo (64x64).psd
+images\MinidimSharp Logo (256x256).psd
 bin\Debug\net7.0-windows\ClosedXML.dll
 bin\Debug\net7.0-windows\DocumentFormat.OpenXml.dll
 bin\Debug\net7.0-windows\EPPlus.dll
