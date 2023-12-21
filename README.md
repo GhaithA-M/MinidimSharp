@@ -119,8 +119,3 @@ Trin 10: Iteration og brugerfeedback
     Efter den indledende udvikling skal du indsamle feedback fra potentielle brugere.
 
     Finpuds applikationen baseret på denne feedback og eventuelle ændringer i de relevante standarder.
-
-
-Til den egentlige kodning skal du oversætte disse trin til det programmeringssprog, du vælger, designe en brugergrænseflade, skrive funktioner til beregningerne og håndtere brugerinput/output.
-
-Hvis du kan oplyse, hvilket programmeringssprog eller framework du bruger, kan jeg give dig mere detaljeret vejledning om kodestrukturen og de biblioteker, der kan være nyttige til dette projekt.
