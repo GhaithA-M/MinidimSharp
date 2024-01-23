@@ -3,7 +3,9 @@
  
  ---------------------------------------------------------------------------
  
-![image](https://github.com/GhaithA-M/MinidimSharp/assets/122114790/cb2753aa-910d-4bf3-a107-2b72fbe8246d)
+![WPF](https://github.com/GhaithA-M/MinidimSharp/assets/122114790/e13b177d-a674-493c-a03c-a67ee3f0bf1c)
+ 
+![Trin](https://github.com/GhaithA-M/MinidimSharp/assets/122114790/cb2753aa-910d-4bf3-a107-2b72fbe8246d)
 
 1:	Udregn belastningsstrøm: (Dimensioneringsstrøm)
 
