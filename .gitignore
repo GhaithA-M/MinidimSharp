@@ -3,3 +3,4 @@ images/
 .vs/
 bin/
 obj/
+.github/workflows/main.yml
