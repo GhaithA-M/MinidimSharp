@@ -76,7 +76,7 @@ Trin 4: Validering
 
     Implementer tilstandskontrollen: IB=INIB?=IN? og IR=Iz-kt-ks-kx-etc.IR?=Iz?-kt?-ks?-kx?-etc.
 
-    Trin 5: Output
+Trin 5: Output
 
 
     Vis resultaterne for brugeren, herunder den anbefalede kabelstørrelse og eventuelle advarsler, hvis betingelserne ikke er opfyldt.
@@ -87,9 +87,9 @@ Trin 4: Validering
 Trin 6: Referencer til standarddiagrammer
 
 
-    Du bliver nødt til at digitalisere diagrammerne fra IEC 60364-standarden, så din applikation kan referere til dem i beregningerne.
+    Digitalisere diagrammerne fra IEC 60364-standarden, så din applikation kan referere til dem i beregningerne.
 
-    Dette kan gøres ved at konvertere diagrammerne til et digitalt format som CSV eller direkte implementering i en database.
+    Konvertere diagrammerne til et digitalt format som CSV eller direkte implementering i en database.
 
 
 Trin 7: Brugervejledning og dokumentation
@@ -105,17 +105,17 @@ Trin 8: Test og validering
 
     Test applikationen grundigt med forskellige scenarier for at sikre nøjagtighed.
 
-    Det kan være nødvendigt at få applikationens beregninger valideret af en certificeret elektroingeniør eller en person med ekspertise i IEC 60364-standarden.
+    Få applikationens beregninger valideret af en certificeret elektroingeniør eller en person med ekspertise i IEC 60364-standarden.
 
 
 Trin 9: Kontrol af overholdelse
 
 
-    Sørg for, at din applikation overholder standarden og eventuelle juridiske krav til software, der leverer tekniske beregninger.
+    Sørg for at applikationen overholder standarden og eventuelle juridiske krav til software, der leverer tekniske beregninger.
 
-Trin 10: Iteration og brugerfeedback
+Trin 10: Brugerfeedback
 
 
-    Efter den indledende udvikling skal du indsamle feedback fra potentielle brugere.
+    Efter den indledende udvikling indsamle feedback fra potentielle brugere.
 
     Finpuds applikationen baseret på denne feedback og eventuelle ændringer i de relevante standarder.

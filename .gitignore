@@ -1,5 +1,5 @@
-.gitignore
 cleartags.bat
-images\MinidimSharp Logo (256x256).psd
-images\MinidimSharp Logo (64x64).psd
-images\Tabel.png
+images/
+.vs/
+bin/
+obj/
