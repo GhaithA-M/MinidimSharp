@@ -1,6 +1,9 @@
-cleartags.bat
-images/
-.vs/
-bin/
-obj/
-.github/workflows/main.yml
+/.vs
+/bin
+/obj
+
+*.bat
+*.yml
+*.psd
+*.png
+
