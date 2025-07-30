@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MinidimSharp v0.4.1 - Elektrisk Installation Dimensionering</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #2c3e50;
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ecf0f1;
+            border: 2px solid #34495e;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #34495e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #2c3e50;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: flex;
+            min-height: 600px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: #bdc3c7;
+            padding: 20px;
+            border-right: 2px solid #34495e;
+            overflow-y: auto;
+            max-height: 600px;
+        }
+
+        .sidebar h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            border-bottom: 2px solid #34495e;
+            padding-bottom: 5px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 10px 12px;
+            margin: 3px 0;
+            background: #34495e;
+            color: white;
+            border: 1px solid #2c3e50;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s ease;
+        }
+
+        .btn:hover {
+            background: #2c3e50;
+        }
+
+        .btn.active {
+            background: #e67e22;
+            border-color: #d35400;
+        }
+
+        .btn.table-btn {
+            background: #7f8c8d;
+            font-size: 11px;
+            padding: 6px 10px;
+            border-color: #95a5a6;
+        }
+
+        .btn.table-btn:hover {
+            background: #95a5a6;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 25px;
+            background: #ecf0f1;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #bdc3c7;
+            font-size: 14px;
+            background: white;
+            transition: border-color 0.2s ease;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #34495e;
+        }
+
+        .result-box {
+            background: #d5dbdb;
+            padding: 15px;
+            margin: 15px 0;
+            border: 2px solid #34495e;
+            border-left: 4px solid #e67e22;
+        }
+
+        .table-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            z-index: 1000;
+        }
+
+        .table-viewer.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .table-content {
+            max-width: 90%;
+            max-height: 90%;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table-content img {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .welcome-screen {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .welcome-screen h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .welcome-screen p {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .voltage-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .voltage-btn {
+            padding: 15px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .voltage-btn.hv {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .voltage-btn.lv {
+            background: #3498db;
+            color: white;
+        }
+
+        .voltage-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .status-bar {
+            background: #34495e;
+            color: white;
+            padding: 10px 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #dee2e6;
+            }
+            
+            .voltage-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>MinidimSharp</h1>
+            <p>Elektrisk Installation Dimensionering - DS/HD 60364 serie</p>
+            <div id="breadcrumb" style="margin-top: 10px; font-size: 14px; opacity: 0.8;">
+                <span id="current-session-info">Ingen aktiv session</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <h3>Beregningssteg</h3>
+                <button class="btn" onclick="showStep(1)">1. Laststrøm Beregning</button>
+                <button class="btn" onclick="showStep(2)">2. Afbryder Valg</button>
+                <button class="btn" onclick="showStep(3)">3. Installation Metode</button>
+                <button class="btn" onclick="showStep(4)">4. Temperatur Koefficient</button>
+                <button class="btn" onclick="showStep(5)">5. Kabel Gruppering</button>
+                <button class="btn" onclick="showStep(6)">6. Kabelstrøm Beregning</button>
+                <button class="btn" onclick="showStep(7)">7. Lastgrad</button>
+                <button class="btn" onclick="showStep(8)">8. Betingelse Kontrol</button>
+                <button class="btn" onclick="showStep(9)">9. Spændingsfald Kontrol</button>
+
+                <h3 style="margin-top: 30px;">Sessions</h3>
+                <button class="btn" onclick="showSessionManager()">Session Manager</button>
+                <button class="btn" onclick="createNewSession()">Ny Session</button>
+                <button class="btn" onclick="saveCurrentSession()">Gem Session</button>
+                
+                <h3 style="margin-top: 30px;">Handlinger</h3>
+                <button class="btn" onclick="calculateAll()">Beregn Alt</button>
+                <button class="btn" onclick="exportResults()">Eksporter Resultater</button>
+                <button class="btn" onclick="importFromExcel()">Import fra Excel</button>
+                <button class="btn" onclick="clearAll()">Ryd Alt</button>
+
+                <h3 style="margin-top: 30px;">Tabeller</h3>
+                <div id="table-buttons">
+                    <!-- Table buttons will be generated here -->
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div id="welcome-screen" class="step-content active">
+                    <div class="welcome-screen">
+                        <h2>Velkommen til MinidimSharp</h2>
+                        <p>Denne applikation hjælper dig med at dimensionere elektriske installationer<br>
+                        i henhold til DS/HD 60364 serie standarder.</p>
+                        <p>Vælg venligst højspænding eller lavspænding beregning<br>
+                        og følg trinene i navigationspanelet.</p>
+                        
+                        <div class="voltage-buttons">
+                            <button class="voltage-btn hv" onclick="setVoltageType('høj')">Start Højspænding Beregning</button>
+                            <button class="voltage-btn lv" onclick="setVoltageType('lav')">Start Lavspænding Beregning</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="step-1" class="step-content">
+                    <h2>Trin 1: Laststrøm Beregning</h2>
+                    <div class="input-group">
+                        <label for="power">Effekt (kW):</label>
+                        <input type="number" id="power" step="0.1" value="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="voltage">Spænding (V):</label>
+                        <input type="number" id="voltage" step="1" value="400">
+                    </div>
+                    <div class="input-group">
+                        <label for="pf">Effektfaktor (cos φ):</label>
+                        <input type="number" id="pf" step="0.01" value="0.85" min="0" max="1">
+                    </div>
+                    <button class="btn" onclick="calculateLoadCurrent()">Beregn Laststrøm</button>
+                    <div id="load-current-result" class="result-box" style="display: none;"></div>
+                </div>
+
+                <div id="step-2" class="step-content">
+                    <h2>Trin 2: Afbryder Valg</h2>
+                    <div class="input-group">
+                        <label for="cb-type">Type:</label>
+                        <select id="cb-type" onchange="updateSchneiderOptions()">
+                            <option value="MCB">MCB</option>
+                            <option value="MCCB">MCCB</option>
+                            <option value="ACB">ACB</option>
+                            <option value="Fuse">Fuse</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="schneider-model">Schneider Model:</label>
+                        <select id="schneider-model">
+                            <option value="">Vælg type først</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="cb-rating">Rating (A):</label>
+                        <input type="number" id="cb-rating" step="1" value="0">
+                    </div>
+                    <button class="btn" onclick="autoSelectRating()">Auto-vælg Rating</button>
+                    <button class="btn" onclick="saveInputs()">Gem Inputs</button>
+                    <div id="validation-result" class="result-box" style="display: none;"></div>
+                </div>
+
+                <div id="step-3" class="step-content">
+                    <h2>Trin 3: Installation Metode</h2>
+                    <div class="input-group">
+                        <label for="install-method">Installation Metode:</label>
+                        <select id="install-method">
+                            <option value="A">A - I tråd i isoleret væg</option>
+                            <option value="B">B - I tråd på trævæg</option>
+                            <option value="C">C - I tråd på mursten</option>
+                            <option value="D">D - I tråd på beton</option>
+                            <option value="E">E - I tråd i jord</option>
+                            <option value="F">F - I tråd i luft</option>
+                            <option value="G">G - I tråd i vand</option>
+                            <option value="H">H - I tråd i olie</option>
+                            <option value="I">I - I tråd i sand</option>
+                            <option value="J">J - I tråd i cement</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="step-4" class="step-content">
+                    <h2>Trin 4: Temperatur Koefficient</h2>
+                    <div class="input-group">
+                        <label for="temperature">Temperatur (°C):</label>
+                        <input type="number" id="temperature" step="1" value="30">
+                    </div>
+                    <button class="btn" onclick="calculateTemperatureCoefficient()">Beregn Temperatur Koefficient</button>
+                    <div id="temp-result" class="result-box" style="display: none;"></div>
+                </div>
+
+                <div id="step-5" class="step-content">
+                    <h2>Trin 5: Kabel Gruppering</h2>
+                    <div class="input-group">
+                        <label for="cable-group">Antal kabler i gruppe:</label>
+                        <input type="number" id="cable-group" step="1" value="1" min="1" max="20">
+                    </div>
+                    <div class="input-group">
+                        <label for="cable-length">Kabel længde (m):</label>
+                        <input type="number" id="cable-length" step="0.1" value="50.0" min="0.1">
+                    </div>
+                    <button class="btn" onclick="calculateCableGrouping()">Beregn Gruppering</button>
+                    <div id="grouping-result" class="result-box" style="display: none;"></div>
+                </div>
+
+                <div id="step-6" class="step-content">
+                    <h2>Trin 6: Kabelstrøm Beregning</h2>
+                    <div class="input-group">
+                        <label for="cable-type">Kabel type:</label>
+                        <select id="cable-type">
+                            <option value="NYM-J 3x1.5">NYM-J 3x1.5</option>
+                            <option value="NYM-J 3x2.5">NYM-J 3x2.5</option>
+                            <option value="NYM-J 3x4">NYM-J 3x4</option>
+                            <option value="NYM-J 3x6">NYM-J 3x6</option>
+                            <option value="NYM-J 3x10">NYM-J 3x10</option>
+                            <option value="NYM-J 3x16">NYM-J 3x16</option>
+                            <option value="NYM-J 3x25">NYM-J 3x25</option>
+                            <option value="NYM-J 3x35">NYM-J 3x35</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="calculateCableCurrent()">Beregn Kabelstrøm</button>
+                    <div id="cable-result" class="result-box" style="display: none;"></div>
+                </div>
+
+                <div id="step-7" class="step-content">
+                    <h2>Trin 7: Lastgrad</h2>
+                    <div class="input-group">
+                        <label for="load-degree">Lastgrad (%):</label>
+                        <input type="number" id="load-degree" step="1" value="100" min="1" max="100">
+                    </div>
+                    <button class="btn" onclick="calculateLoadDegree()">Beregn Lastgrad</button>
+                    <div id="load-degree-result" class="result-box" style="display: none;"></div>
+                </div>
+
+                <div id="step-8" class="step-content">
+                    <h2>Trin 8: Betingelse Kontrol</h2>
+                    <button class="btn" onclick="checkConditions()">Kontroller Alle Betingelser</button>
+                    <div id="conditions-result" class="result-box" style="display: none;"></div>
+                </div>
+
+                <div id="step-9" class="step-content">
+                    <h2>Trin 9: Spændingsfald Kontrol</h2>
+                    <button class="btn" onclick="calculateVoltageDrop()">Beregn Spændingsfald</button>
+                    <div id="voltage-drop-result" class="result-box" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <span id="status-text">Klar til at starte beregning</span>
+            <span style="float: right;">v0.4.1</span>
+        </div>
+    </div>
+
+    <!-- Table Viewer Modal -->
+    <div id="table-viewer" class="table-viewer">
+        <button class="close-btn" onclick="closeTable()">Luk</button>
+        <div class="table-content">
+            <img id="table-image" src="" alt="Tabel">
+        </div>
+    </div>
+
+    <!-- Session Manager Modal -->
+    <div id="session-manager" class="table-viewer">
+        <div class="table-content" style="max-width: 800px; max-height: 600px; padding: 20px;">
+            <h2 style="margin-bottom: 20px; color: #2c3e50;">Session Manager</h2>
+            
+            <div style="margin-bottom: 20px;">
+                <h3>Aktive Sessions</h3>
+                <div id="active-sessions-list" style="max-height: 200px; overflow-y: auto; border: 1px solid #bdc3c7; padding: 10px; background: white;">
+                    <!-- Sessions will be listed here -->
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <h3>Gemte Sessions</h3>
+                <div id="saved-sessions-list" style="max-height: 200px; overflow-y: auto; border: 1px solid #bdc3c7; padding: 10px; background: white;">
+                    <!-- Saved sessions will be listed here -->
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="btn" onclick="closeSessionManager()" style="width: auto; margin: 5px;">Luk</button>
+                <button class="btn" onclick="exportAllSessions()" style="width: auto; margin: 5px;">Eksporter Alle Sessions</button>
+                <button class="btn" onclick="importSessionsFromExcel()" style="width: auto; margin: 5px;">Import Sessions fra Excel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Input for Excel Import (hidden) -->
+    <input type="file" id="excel-import" accept=".xlsx,.xls" style="display: none;" onchange="handleExcelImport(event)">
+    <input type="file" id="sessions-import" accept=".xlsx,.xls" style="display: none;" onchange="handleSessionsImport(event)">
+
+    <script>
+        // Global variables
+        let sessions = {
+            active: {},
+            saved: {}
+        };
+        
+        let currentSessionId = null;
+        let currentStep = 0;
+        
+        // Session management
+        function createNewSession() {
+            const sessionId = 'session_' + Date.now();
+            const sessionName = prompt('Indtast navn for ny session:', `Session ${new Date().toLocaleDateString('da-DK')}`);
+            
+            if (!sessionName) return;
+            
+            const voltageType = prompt('Vælg spændingstype (lav/høj):', 'lav');
+            if (!voltageType || (voltageType !== 'lav' && voltageType !== 'høj')) return;
+            
+            const newSession = {
+                id: sessionId,
+                name: sessionName,
+                voltageType: voltageType,
+                created: new Date().toISOString(),
+                lastModified: new Date().toISOString(),
+                data: {
+                    spænding_type: voltageType,
+                    effekt: 0.0,
+                    spænding: voltageType === 'høj' ? 10000.0 : 400.0,
+                    effektfaktor: 0.85,
+                    laststrøm: 0.0,
+                    afbryder_type: 'MCB',
+                    afbryder_rating: 0.0,
+                    installation_metode: 'A',
+                    temperatur: 30.0,
+                    kabel_gruppe: 1,
+                    kabel_længde: 50.0,
+                    kabel_type: 'NYM-J 3x1.5',
+                    beregnet_kabelstrøm: 0.0,
+                    spændingsfald: 0.0,
+                    advarsler: [],
+                    fejl: []
+                },
+                formData: {
+                    power: 0,
+                    voltage: voltageType === 'høj' ? 10000 : 400,
+                    pf: 0.85,
+                    cbType: 'MCB',
+                    schneiderModel: '',
+                    cbRating: 0,
+                    installMethod: 'A',
+                    temperature: 30,
+                    cableGroup: 1,
+                    cableLength: 50.0,
+                    cableType: 'NYM-J 3x1.5',
+                    loadDegree: 100
+                }
+            };
+            
+            sessions.active[sessionId] = newSession;
+            currentSessionId = sessionId;
+            
+            loadSessionData(newSession);
+            updateSessionInfo();
+            updateStatus(`Ny session oprettet: ${sessionName}`);
+            
+            // Auto-save sessions
+            saveSessionsToStorage();
+        }
+        
+        function loadSessionData(session) {
+            // Load form data
+            document.getElementById('power').value = session.formData.power || 0;
+            document.getElementById('voltage').value = session.formData.voltage || 400;
+            document.getElementById('pf').value = session.formData.pf || 0.85;
+            document.getElementById('cb-type').value = session.formData.cbType || 'MCB';
+            document.getElementById('cb-rating').value = session.formData.cbRating || 0;
+            document.getElementById('install-method').value = session.formData.installMethod || 'A';
+            document.getElementById('temperature').value = session.formData.temperature || 30;
+            document.getElementById('cable-group').value = session.formData.cableGroup || 1;
+            document.getElementById('cable-length').value = session.formData.cableLength || 50.0;
+            document.getElementById('cable-type').value = session.formData.cableType || 'NYM-J 3x1.5';
+            document.getElementById('load-degree').value = session.formData.loadDegree || 100;
+            
+            updateSchneiderOptions();
+            if (session.formData.schneiderModel) {
+                document.getElementById('schneider-model').value = session.formData.schneiderModel;
+            }
+            
+            // Set voltage type
+            if (session.data.spænding_type === 'høj') {
+                setVoltageType('høj');
+            } else {
+                setVoltageType('lav');
+            }
+        }
+        
+        function saveCurrentSession() {
+            if (!currentSessionId) {
+                alert('Ingen aktiv session at gemme');
+                return;
+            }
+            
+            const session = sessions.active[currentSessionId];
+            if (!session) return;
+            
+            // Save form data
+            session.formData = {
+                power: document.getElementById('power').value,
+                voltage: document.getElementById('voltage').value,
+                pf: document.getElementById('pf').value,
+                cbType: document.getElementById('cb-type').value,
+                schneiderModel: document.getElementById('schneider-model').value,
+                cbRating: document.getElementById('cb-rating').value,
+                installMethod: document.getElementById('install-method').value,
+                temperature: document.getElementById('temperature').value,
+                cableGroup: document.getElementById('cable-group').value,
+                cableLength: document.getElementById('cable-length').value,
+                cableType: document.getElementById('cable-type').value,
+                loadDegree: document.getElementById('load-degree').value
+            };
+            
+            // Save calculation data
+            session.data = { ...calculationData };
+            session.lastModified = new Date().toISOString();
+            
+            // Move to saved sessions
+            sessions.saved[currentSessionId] = session;
+            delete sessions.active[currentSessionId];
+            
+            saveSessionsToStorage();
+            updateSessionInfo();
+            updateStatus(`Session gemt: ${session.name}`);
+        }
+        
+        function showSessionManager() {
+            updateSessionLists();
+            document.getElementById('session-manager').classList.add('active');
+        }
+        
+        function closeSessionManager() {
+            document.getElementById('session-manager').classList.remove('active');
+        }
+        
+        function updateSessionLists() {
+            const activeList = document.getElementById('active-sessions-list');
+            const savedList = document.getElementById('saved-sessions-list');
+            
+            activeList.innerHTML = '';
+            savedList.innerHTML = '';
+            
+            // Active sessions
+            Object.values(sessions.active).forEach(session => {
+                const div = document.createElement('div');
+                div.style.cssText = 'padding: 8px; margin: 5px 0; border: 1px solid #ddd; background: #f9f9f9; cursor: pointer;';
+                div.innerHTML = `
+                    <strong>${session.name}</strong> (${session.voltageType === 'høj' ? 'Høj' : 'Lav'}spænding)<br>
+                    <small>Oprettet: ${new Date(session.created).toLocaleDateString('da-DK')}</small>
+                    ${currentSessionId === session.id ? ' <span style="color: green;">(Aktiv)</span>' : ''}
+                `;
+                div.onclick = () => switchToSession(session.id);
+                activeList.appendChild(div);
+            });
+            
+            // Saved sessions
+            Object.values(sessions.saved).forEach(session => {
+                const div = document.createElement('div');
+                div.style.cssText = 'padding: 8px; margin: 5px 0; border: 1px solid #ddd; background: #f9f9f9; cursor: pointer;';
+                div.innerHTML = `
+                    <strong>${session.name}</strong> (${session.voltageType === 'høj' ? 'Høj' : 'Lav'}spænding)<br>
+                    <small>Gemt: ${new Date(session.lastModified).toLocaleDateString('da-DK')}</small>
+                    <button onclick="deleteSession('${session.id}')" style="float: right; background: #e74c3c; color: white; border: none; padding: 2px 6px; cursor: pointer;">Slet</button>
+                `;
+                div.onclick = () => loadSavedSession(session.id);
+                savedList.appendChild(div);
+            });
+        }
+        
+        function switchToSession(sessionId) {
+            const session = sessions.active[sessionId];
+            if (!session) return;
+            
+            currentSessionId = sessionId;
+            loadSessionData(session);
+            updateSessionInfo();
+            updateStatus(`Skiftet til session: ${session.name}`);
+        }
+        
+        function loadSavedSession(sessionId) {
+            const session = sessions.saved[sessionId];
+            if (!session) return;
+            
+            // Move to active sessions
+            sessions.active[sessionId] = session;
+            delete sessions.saved[sessionId];
+            
+            currentSessionId = sessionId;
+            loadSessionData(session);
+            updateSessionInfo();
+            updateStatus(`Indlæst session: ${session.name}`);
+            
+            saveSessionsToStorage();
+        }
+        
+        function deleteSession(sessionId) {
+            if (confirm('Er du sikker på at du vil slette denne session?')) {
+                delete sessions.saved[sessionId];
+                saveSessionsToStorage();
+                updateSessionLists();
+                updateStatus('Session slettet');
+            }
+        }
+        
+        function updateSessionInfo() {
+            const infoElement = document.getElementById('current-session-info');
+            if (currentSessionId && sessions.active[currentSessionId]) {
+                const session = sessions.active[currentSessionId];
+                infoElement.innerHTML = `
+                    <strong>${session.name}</strong> | 
+                    ${session.voltageType === 'høj' ? 'Høj' : 'Lav'}spænding | 
+                    Sidst ændret: ${new Date(session.lastModified).toLocaleString('da-DK')}
+                `;
+            } else {
+                infoElement.textContent = 'Ingen aktiv session';
+            }
+        }
+        
+        function saveSessionsToStorage() {
+            localStorage.setItem('minidimsharp_sessions', JSON.stringify(sessions));
+        }
+        
+        function loadSessionsFromStorage() {
+            const saved = localStorage.getItem('minidimsharp_sessions');
+            if (saved) {
+                sessions = JSON.parse(saved);
+            }
+        }
+        
+        function autoSaveCurrentSession() {
+            if (currentSessionId && sessions.active[currentSessionId]) {
+                const session = sessions.active[currentSessionId];
+                
+                // Save form data
+                session.formData = {
+                    power: document.getElementById('power').value,
+                    voltage: document.getElementById('voltage').value,
+                    pf: document.getElementById('pf').value,
+                    cbType: document.getElementById('cb-type').value,
+                    schneiderModel: document.getElementById('schneider-model').value,
+                    cbRating: document.getElementById('cb-rating').value,
+                    installMethod: document.getElementById('install-method').value,
+                    temperature: document.getElementById('temperature').value,
+                    cableGroup: document.getElementById('cable-group').value,
+                    cableLength: document.getElementById('cable-length').value,
+                    cableType: document.getElementById('cable-type').value,
+                    loadDegree: document.getElementById('load-degree').value
+                };
+                
+                session.data = { ...calculationData };
+                session.lastModified = new Date().toISOString();
+                
+                saveSessionsToStorage();
+            }
+        }
+
+        // Table data - you can add more tables here
+        const tables = [
+            { name: "Tabel B.52.1", file: "assets/tables/Tabel B.52.1.png" },
+            { name: "Tabel B.52.1 (fortsat)", file: "assets/tables/Tabel B.52.1 (fortsat).png" },
+            { name: "Spændingsfaktor", file: "assets/tables/Spændingsfaktor.png" },
+            { name: "Korrektionsfaktorer for HS", file: "assets/tables/Korrektionsfaktorer for HS.png" },
+            { name: "Jordspyd påkrævet modstand", file: "assets/tables/Jordspyd påkrævet modstand.png" },
+            { name: "Tabel 43A - Værdier af k for ledere", file: "assets/tables/Tabel 43A - Værdier af k for ledere.png" },
+            { name: "Reaktans enlederkabel - AL", file: "assets/tables/Reaktans enlederkabel - AL.png" },
+            { name: "Reaktans enlederkabel - CU", file: "assets/tables/Reaktans enlederkabel - CU.png" },
+            { name: "Reaktans flerlederkabler", file: "assets/tables/Reaktans flerlederkabler.png" },
+            { name: "Vekselstrømsmodstand enlederkabel - CU", file: "assets/tables/Vekselstrømsmodstand enlederkabel - CU.png" },
+            { name: "Vekselstrømsmodstand enlederkabel - AL", file: "assets/tables/Vekselstrømsmodstand enlederkabel - AL.png" },
+            { name: "Vekselstrømsmodstand flerlederkabler", file: "assets/tables/Vekselstrømsmodstand flerlederkabler.png" }
+        ];
+
+        // Initialize the application
+        function init() {
+            generateTableButtons();
+            updateStatus("Klar til at starte beregning");
+        }
+
+        // Generate table buttons
+        function generateTableButtons() {
+            const container = document.getElementById('table-buttons');
+            tables.forEach(table => {
+                const btn = document.createElement('button');
+                btn.className = 'btn table-btn';
+                btn.textContent = table.name;
+                btn.onclick = () => showTable(table.file, table.name);
+                container.appendChild(btn);
+            });
+        }
+
+        // Show table in modal
+        function showTable(file, name) {
+            const viewer = document.getElementById('table-viewer');
+            const img = document.getElementById('table-image');
+            img.src = file;
+            img.alt = name;
+            viewer.classList.add('active');
+        }
+
+        // Close table modal
+        function closeTable() {
+            document.getElementById('table-viewer').classList.remove('active');
+        }
+
+        // Set voltage type
+        function setVoltageType(type) {
+            if (!currentSessionId) {
+                alert('Opret venligst en session først');
+                return;
+            }
+            
+            const session = sessions.active[currentSessionId];
+            if (!session) return;
+            
+            session.data.spænding_type = type;
+            if (type === 'høj') {
+                session.data.spænding = 10000.0;
+                document.getElementById('voltage').value = 10000;
+            } else {
+                session.data.spænding = 400.0;
+                document.getElementById('voltage').value = 400;
+            }
+            
+            // Update calculationData for compatibility
+            calculationData = { ...session.data };
+            
+            updateStatus(`Valgt: ${type === 'høj' ? 'Høj' : 'Lav'}spænding`);
+            showStep(1);
+            autoSaveCurrentSession();
+        }
+
+        // Show step
+        function showStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+            
+            // Show selected step
+            document.getElementById(`step-${step}`).classList.add('active');
+            
+            // Update button colors
+            document.querySelectorAll('.sidebar .btn').forEach((btn, index) => {
+                if (index < 9) { // Only calculation step buttons
+                    btn.classList.remove('active');
+                }
+            });
+            
+            if (step > 0) {
+                document.querySelectorAll('.sidebar .btn')[step - 1].classList.add('active');
+            }
+            
+            currentStep = step;
+        }
+
+        // Calculate load current
+        function calculateLoadCurrent() {
+            const power = parseFloat(document.getElementById('power').value);
+            const voltage = parseFloat(document.getElementById('voltage').value);
+            const pf = parseFloat(document.getElementById('pf').value);
+            
+            if (isNaN(power) || isNaN(voltage) || isNaN(pf)) {
+                alert('Indtast venligst gyldige numeriske værdier');
+                return;
+            }
+            
+            // Formula: IB = P / (U * cos φ * √3)
+            const loadCurrent = power * 1000 / (voltage * pf * Math.sqrt(3));
+            
+            calculationData.effekt = power;
+            calculationData.spænding = voltage;
+            calculationData.effektfaktor = pf;
+            calculationData.laststrøm = loadCurrent;
+            
+            const resultDiv = document.getElementById('load-current-result');
+            resultDiv.innerHTML = `
+                <strong>Laststrøm: ${loadCurrent.toFixed(2)} A</strong><br>
+                Formel: IB = P / (U × cos φ × √3)<br>
+                IB = ${power} kW / (${voltage} V × ${pf} × 1.732)
+            `;
+            resultDiv.style.display = 'block';
+            
+            updateStatus(`Laststrøm beregnet: ${loadCurrent.toFixed(2)} A`);
+        }
+
+        // Auto-select circuit breaker rating
+        function autoSelectRating() {
+            const loadCurrent = calculationData.laststrøm;
+            if (loadCurrent <= 0) {
+                alert('Beregn venligst laststrøm først');
+                return;
+            }
+            
+            const standardRatings = [6, 10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630, 800, 1000];
+            
+            let selectedRating = null;
+            for (let rating of standardRatings) {
+                if (rating >= loadCurrent) {
+                    selectedRating = rating;
+                    break;
+                }
+            }
+            
+            if (selectedRating) {
+                document.getElementById('cb-rating').value = selectedRating;
+                calculationData.afbryder_rating = selectedRating;
+                updateValidation();
+                updateStatus(`Auto-valgt rating: ${selectedRating} A`);
+            } else {
+                alert('Laststrøm er for høj for standard MCB');
+            }
+        }
+
+        // Update validation
+        function updateValidation() {
+            const rating = parseFloat(document.getElementById('cb-rating').value);
+            const loadCurrent = calculationData.laststrøm;
+            
+            if (isNaN(rating)) {
+                document.getElementById('validation-result').style.display = 'none';
+                return;
+            }
+            
+            const resultDiv = document.getElementById('validation-result');
+            if (rating >= loadCurrent) {
+                resultDiv.innerHTML = `✅ Betingelse 1 OK: IB (${loadCurrent.toFixed(2)}A) ≤ IN (${rating}A)`;
+                resultDiv.style.color = 'green';
+            } else {
+                resultDiv.innerHTML = `❌ Betingelse 1 IKKE OK: IB (${loadCurrent.toFixed(2)}A) > IN (${rating}A)`;
+                resultDiv.style.color = 'red';
+            }
+            resultDiv.style.display = 'block';
+        }
+
+        // Calculate temperature coefficient
+        function calculateTemperatureCoefficient() {
+            const temp = parseFloat(document.getElementById('temperature').value);
+            
+            if (isNaN(temp)) {
+                alert('Indtast venligst gyldig temperatur');
+                return;
+            }
+            
+            calculationData.temperatur = temp;
+            
+            // Temperature coefficient calculation
+            let kt;
+            if (temp <= 10) kt = 1.15;
+            else if (temp <= 15) kt = 1.12;
+            else if (temp <= 20) kt = 1.08;
+            else if (temp <= 25) kt = 1.04;
+            else if (temp <= 30) kt = 1.00;
+            else if (temp <= 35) kt = 0.96;
+            else if (temp <= 40) kt = 0.91;
+            else if (temp <= 45) kt = 0.87;
+            else kt = 0.82;
+            
+            calculationData.temperatur_koefficient = kt;
+            
+            const resultDiv = document.getElementById('temp-result');
+            resultDiv.innerHTML = `
+                <strong>Temperatur: ${temp}°C</strong><br>
+                Temperatur koefficient (kt): ${kt.toFixed(3)}<br>
+                Formel: Interpoleret fra IEC 60364-5-52 tabel
+            `;
+            resultDiv.style.display = 'block';
+            
+            updateStatus(`Temperatur koefficient beregnet: ${kt.toFixed(3)}`);
+        }
+
+        // Calculate all
+        function calculateAll() {
+            alert('Komplet beregning vil blive implementeret');
+        }
+
+        // Export results
+        function exportResults() {
+            alert('Eksport funktion vil blive implementeret');
+        }
+
+        // Clear all
+        function clearAll() {
+            calculationData = {
+                spænding_type: 'lav',
+                effekt: 0.0,
+                spænding: 400.0,
+                effektfaktor: 0.85,
+                laststrøm: 0.0,
+                afbryder_type: 'MCB',
+                afbryder_rating: 0.0,
+                installation_metode: 'A',
+                temperatur: 30.0,
+                kabel_gruppe: 1,
+                kabel_længde: 50.0,
+                kabel_type: 'NYM-J 3x1.5',
+                beregnet_kabelstrøm: 0.0,
+                spændingsfald: 0.0,
+                advarsler: [],
+                fejl: []
+            };
+            
+            // Reset form fields
+            document.getElementById('power').value = 0;
+            document.getElementById('voltage').value = 400;
+            document.getElementById('pf').value = 0.85;
+            document.getElementById('cb-rating').value = 0;
+            document.getElementById('temperature').value = 30;
+            
+            // Hide result boxes
+            document.querySelectorAll('.result-box').forEach(el => el.style.display = 'none');
+            
+            // Show welcome screen
+            showStep(0);
+            updateStatus('Alle data ryddet');
+        }
+
+        // Schneider relay options
+        const schneiderOptions = {
+            MCB: [
+                'Acti9 iC60N 1P',
+                'Acti9 iC60N 2P', 
+                'Acti9 iC60N 3P',
+                'Acti9 iC60N 4P',
+                'Acti9 iDPN 1P+N',
+                'Acti9 iID 1P',
+                'Acti9 iID 2P',
+                'Acti9 iID 3P',
+                'Acti9 iID 4P'
+            ],
+            MCCB: [
+                'Compact NSX100F',
+                'Compact NSX160F',
+                'Compact NSX250F',
+                'Compact NSX400F',
+                'Compact NSX630F',
+                'Compact NSX800F',
+                'Compact NSX1000F'
+            ],
+            ACB: [
+                'Masterpact MTZ1',
+                'Masterpact MTZ2',
+                'Masterpact MTZ3',
+                'Masterpact NW'
+            ],
+            Fuse: [
+                'NH Fuse 00',
+                'NH Fuse 1',
+                'NH Fuse 2',
+                'NH Fuse 3',
+                'NH Fuse 4'
+            ]
+        };
+
+        // Update Schneider options based on selected type
+        function updateSchneiderOptions() {
+            const cbType = document.getElementById('cb-type').value;
+            const schneiderSelect = document.getElementById('schneider-model');
+            
+            schneiderSelect.innerHTML = '<option value="">Vælg model</option>';
+            
+            if (schneiderOptions[cbType]) {
+                schneiderOptions[cbType].forEach(option => {
+                    const opt = document.createElement('option');
+                    opt.value = option;
+                    opt.textContent = option;
+                    schneiderSelect.appendChild(opt);
+                });
+            }
+        }
+
+        // Save inputs to localStorage
+        function saveInputs() {
+            const inputs = {
+                power: document.getElementById('power').value,
+                voltage: document.getElementById('voltage').value,
+                pf: document.getElementById('pf').value,
+                cbType: document.getElementById('cb-type').value,
+                schneiderModel: document.getElementById('schneider-model').value,
+                cbRating: document.getElementById('cb-rating').value,
+                installMethod: document.getElementById('install-method').value,
+                temperature: document.getElementById('temperature').value,
+                cableGroup: document.getElementById('cable-group').value,
+                cableLength: document.getElementById('cable-length').value,
+                cableType: document.getElementById('cable-type').value,
+                loadDegree: document.getElementById('load-degree').value
+            };
+            
+            localStorage.setItem('minidimsharp_inputs', JSON.stringify(inputs));
+            updateStatus('Inputs gemt lokalt');
+        }
+
+        // Load inputs from localStorage
+        function loadInputs() {
+            const saved = localStorage.getItem('minidimsharp_inputs');
+            if (saved) {
+                const inputs = JSON.parse(saved);
+                document.getElementById('power').value = inputs.power || 0;
+                document.getElementById('voltage').value = inputs.voltage || 400;
+                document.getElementById('pf').value = inputs.pf || 0.85;
+                document.getElementById('cb-type').value = inputs.cbType || 'MCB';
+                document.getElementById('cb-rating').value = inputs.cbRating || 0;
+                document.getElementById('install-method').value = inputs.installMethod || 'A';
+                document.getElementById('temperature').value = inputs.temperature || 30;
+                document.getElementById('cable-group').value = inputs.cableGroup || 1;
+                document.getElementById('cable-length').value = inputs.cableLength || 50.0;
+                document.getElementById('cable-type').value = inputs.cableType || 'NYM-J 3x1.5';
+                document.getElementById('load-degree').value = inputs.loadDegree || 100;
+                
+                updateSchneiderOptions();
+                if (inputs.schneiderModel) {
+                    document.getElementById('schneider-model').value = inputs.schneiderModel;
+                }
+                
+                updateStatus('Inputs indlæst fra gemt data');
+            }
+        }
+
+        // Calculate cable grouping
+        function calculateCableGrouping() {
+            const group = parseInt(document.getElementById('cable-group').value);
+            const length = parseFloat(document.getElementById('cable-length').value);
+            
+            if (isNaN(group) || isNaN(length)) {
+                alert('Indtast venligst gyldige værdier');
+                return;
+            }
+            
+            calculationData.kabel_gruppe = group;
+            calculationData.kabel_længde = length;
+            
+            // Grouping factor calculation (simplified)
+            let groupingFactor = 1.0;
+            if (group > 1) {
+                groupingFactor = 0.8 + (0.2 / group);
+            }
+            
+            const resultDiv = document.getElementById('grouping-result');
+            resultDiv.innerHTML = `
+                <strong>Kabel gruppering beregnet</strong><br>
+                Antal kabler: ${group}<br>
+                Kabel længde: ${length} m<br>
+                Gruppering faktor: ${groupingFactor.toFixed(3)}<br>
+                Formel: kg = 0.8 + (0.2 / n) for n > 1
+            `;
+            resultDiv.style.display = 'block';
+            
+            updateStatus(`Gruppering beregnet: ${group} kabler, ${length}m`);
+        }
+
+        // Calculate cable current
+        function calculateCableCurrent() {
+            const cableType = document.getElementById('cable-type').value;
+            
+            // Cable current ratings (simplified)
+            const cableRatings = {
+                'NYM-J 3x1.5': 16,
+                'NYM-J 3x2.5': 20,
+                'NYM-J 3x4': 25,
+                'NYM-J 3x6': 32,
+                'NYM-J 3x10': 40,
+                'NYM-J 3x16': 50,
+                'NYM-J 3x25': 63,
+                'NYM-J 3x35': 80
+            };
+            
+            const rating = cableRatings[cableType] || 0;
+            calculationData.kabel_type = cableType;
+            calculationData.beregnet_kabelstrøm = rating;
+            
+            const resultDiv = document.getElementById('cable-result');
+            resultDiv.innerHTML = `
+                <strong>Kabelstrøm beregnet</strong><br>
+                Kabel type: ${cableType}<br>
+                Maksimal strøm: ${rating} A<br>
+                Formel: Fra kabel tabel DS/HD 60364-5-52
+            `;
+            resultDiv.style.display = 'block';
+            
+            updateStatus(`Kabelstrøm: ${rating} A for ${cableType}`);
+        }
+
+        // Calculate load degree
+        function calculateLoadDegree() {
+            const loadDegree = parseFloat(document.getElementById('load-degree').value);
+            
+            if (isNaN(loadDegree) || loadDegree < 1 || loadDegree > 100) {
+                alert('Indtast venligst gyldig lastgrad (1-100%)');
+                return;
+            }
+            
+            const resultDiv = document.getElementById('load-degree-result');
+            resultDiv.innerHTML = `
+                <strong>Lastgrad beregnet</strong><br>
+                Lastgrad: ${loadDegree}%<br>
+                Effektiv laststrøm: ${(calculationData.laststrøm * loadDegree / 100).toFixed(2)} A<br>
+                Formel: IB_effektiv = IB × lastgrad / 100
+            `;
+            resultDiv.style.display = 'block';
+            
+            updateStatus(`Lastgrad: ${loadDegree}%`);
+        }
+
+        // Check all conditions
+        function checkConditions() {
+            const loadCurrent = calculationData.laststrøm;
+            const cbRating = parseFloat(document.getElementById('cb-rating').value);
+            const cableCurrent = calculationData.beregnet_kabelstrøm;
+            
+            let results = [];
+            
+            // Condition 1: IB ≤ IN
+            if (cbRating >= loadCurrent) {
+                results.push('✅ Betingelse 1: IB ≤ IN (OK)');
+            } else {
+                results.push('❌ Betingelse 1: IB ≤ IN (IKKE OK)');
+            }
+            
+            // Condition 2: IB ≤ IZ
+            if (cableCurrent >= loadCurrent) {
+                results.push('✅ Betingelse 2: IB ≤ IZ (OK)');
+            } else {
+                results.push('❌ Betingelse 2: IB ≤ IZ (IKKE OK)');
+            }
+            
+            // Condition 3: IN ≤ IZ
+            if (cableCurrent >= cbRating) {
+                results.push('✅ Betingelse 3: IN ≤ IZ (OK)');
+            } else {
+                results.push('❌ Betingelse 3: IN ≤ IZ (IKKE OK)');
+            }
+            
+            const resultDiv = document.getElementById('conditions-result');
+            resultDiv.innerHTML = `
+                <strong>Betingelse kontrol</strong><br>
+                ${results.join('<br>')}
+            `;
+            resultDiv.style.display = 'block';
+            
+            updateStatus('Betingelser kontrolleret');
+        }
+
+        // Calculate voltage drop
+        function calculateVoltageDrop() {
+            const loadCurrent = calculationData.laststrøm;
+            const cableLength = calculationData.kabel_længde;
+            const voltage = calculationData.spænding;
+            
+            // Simplified voltage drop calculation
+            const voltageDrop = (loadCurrent * cableLength * 0.001) / 100; // 1mV/A/m
+            const voltageDropPercent = (voltageDrop / voltage) * 100;
+            
+            const resultDiv = document.getElementById('voltage-drop-result');
+            resultDiv.innerHTML = `
+                <strong>Spændingsfald beregnet</strong><br>
+                Spændingsfald: ${voltageDrop.toFixed(2)} V<br>
+                Spændingsfald: ${voltageDropPercent.toFixed(2)}%<br>
+                Formel: ΔU = IB × L × 0.001 V/A/m<br>
+                ${voltageDropPercent <= 3 ? '✅ Acceptabelt (≤3%)' : '❌ For højt (>3%)'}
+            `;
+            resultDiv.style.display = 'block';
+            
+            updateStatus(`Spændingsfald: ${voltageDropPercent.toFixed(2)}%`);
+        }
+
+        // Export results to Excel
+        function exportResults() {
+            if (!currentSessionId) {
+                alert('Ingen aktiv session at eksportere');
+                return;
+            }
+            
+            const session = sessions.active[currentSessionId];
+            if (!session) return;
+            
+            const workbook = XLSX.utils.book_new();
+            
+            // Create data for export
+            const data = [
+                ['MinidimSharp Beregningsresultater'],
+                ['Session: ' + session.name],
+                ['Spændingstype: ' + (session.data.spænding_type === 'høj' ? 'Højspænding' : 'Lavspænding')],
+                [''],
+                ['Parameter', 'Værdi', 'Enhed'],
+                ['Spændingstype', session.data.spænding_type, ''],
+                ['Effekt', session.data.effekt, 'kW'],
+                ['Spænding', session.data.spænding, 'V'],
+                ['Effektfaktor', session.data.effektfaktor, ''],
+                ['Laststrøm', session.data.laststrøm, 'A'],
+                ['Afbryder type', session.data.afbryder_type, ''],
+                ['Afbryder rating', session.data.afbryder_rating, 'A'],
+                ['Installation metode', session.data.installation_metode, ''],
+                ['Temperatur', session.data.temperatur, '°C'],
+                ['Kabel gruppe', session.data.kabel_gruppe, ''],
+                ['Kabel længde', session.data.kabel_længde, 'm'],
+                ['Kabel type', session.data.kabel_type, ''],
+                ['Beregnet kabelstrøm', session.data.beregnet_kabelstrøm, 'A'],
+                [''],
+                ['Beregnet dato', new Date().toLocaleString('da-DK'), ''],
+                ['Session oprettet', new Date(session.created).toLocaleString('da-DK'), ''],
+                ['Sidst ændret', new Date(session.lastModified).toLocaleString('da-DK'), '']
+            ];
+            
+            const worksheet = XLSX.utils.aoa_to_sheet(data);
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Resultater');
+            
+            // Save the file
+            XLSX.writeFile(workbook, `MinidimSharp_${session.name}_${new Date().toISOString().split('T')[0]}.xlsx`);
+            
+            updateStatus('Resultater eksporteret til Excel');
+        }
+        
+        // Import from Excel
+        function importFromExcel() {
+            document.getElementById('excel-import').click();
+        }
+        
+        function handleExcelImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                    
+                    // Parse the Excel data
+                    const importData = {};
+                    for (let i = 4; i < jsonData.length; i++) {
+                        const row = jsonData[i];
+                        if (row && row[0] && row[1] !== undefined) {
+                            importData[row[0]] = row[1];
+                        }
+                    }
+                    
+                    // Create new session from imported data
+                    const sessionId = 'session_' + Date.now();
+                    const sessionName = `Import ${new Date().toLocaleDateString('da-DK')}`;
+                    
+                    const newSession = {
+                        id: sessionId,
+                        name: sessionName,
+                        voltageType: importData['Spændingstype'] || 'lav',
+                        created: new Date().toISOString(),
+                        lastModified: new Date().toISOString(),
+                        data: {
+                            spænding_type: importData['Spændingstype'] || 'lav',
+                            effekt: parseFloat(importData['Effekt']) || 0.0,
+                            spænding: parseFloat(importData['Spænding']) || 400.0,
+                            effektfaktor: parseFloat(importData['Effektfaktor']) || 0.85,
+                            laststrøm: parseFloat(importData['Laststrøm']) || 0.0,
+                            afbryder_type: importData['Afbryder type'] || 'MCB',
+                            afbryder_rating: parseFloat(importData['Afbryder rating']) || 0.0,
+                            installation_metode: importData['Installation metode'] || 'A',
+                            temperatur: parseFloat(importData['Temperatur']) || 30.0,
+                            kabel_gruppe: parseInt(importData['Kabel gruppe']) || 1,
+                            kabel_længde: parseFloat(importData['Kabel længde']) || 50.0,
+                            kabel_type: importData['Kabel type'] || 'NYM-J 3x1.5',
+                            beregnet_kabelstrøm: parseFloat(importData['Beregnet kabelstrøm']) || 0.0,
+                            spændingsfald: 0.0,
+                            advarsler: [],
+                            fejl: []
+                        },
+                        formData: {
+                            power: parseFloat(importData['Effekt']) || 0,
+                            voltage: parseFloat(importData['Spænding']) || 400,
+                            pf: parseFloat(importData['Effektfaktor']) || 0.85,
+                            cbType: importData['Afbryder type'] || 'MCB',
+                            schneiderModel: '',
+                            cbRating: parseFloat(importData['Afbryder rating']) || 0,
+                            installMethod: importData['Installation metode'] || 'A',
+                            temperature: parseFloat(importData['Temperatur']) || 30,
+                            cableGroup: parseInt(importData['Kabel gruppe']) || 1,
+                            cableLength: parseFloat(importData['Kabel længde']) || 50.0,
+                            cableType: importData['Kabel type'] || 'NYM-J 3x1.5',
+                            loadDegree: 100
+                        }
+                    };
+                    
+                    sessions.active[sessionId] = newSession;
+                    currentSessionId = sessionId;
+                    
+                    loadSessionData(newSession);
+                    updateSessionInfo();
+                    saveSessionsToStorage();
+                    
+                    updateStatus(`Data importeret fra Excel: ${sessionName}`);
+                    
+                } catch (error) {
+                    alert('Fejl ved import af Excel fil: ' + error.message);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+            
+            // Reset file input
+            event.target.value = '';
+        }
+        
+        // Export all sessions to Excel
+        function exportAllSessions() {
+            const workbook = XLSX.utils.book_new();
+            
+            // Export active sessions
+            Object.values(sessions.active).forEach(session => {
+                const data = [
+                    ['Session: ' + session.name],
+                    ['Type: ' + (session.voltageType === 'høj' ? 'Højspænding' : 'Lavspænding')],
+                    ['Oprettet: ' + new Date(session.created).toLocaleString('da-DK')],
+                    ['Sidst ændret: ' + new Date(session.lastModified).toLocaleString('da-DK')],
+                    [''],
+                    ['Parameter', 'Værdi', 'Enhed'],
+                    ['Spændingstype', session.data.spænding_type, ''],
+                    ['Effekt', session.data.effekt, 'kW'],
+                    ['Spænding', session.data.spænding, 'V'],
+                    ['Effektfaktor', session.data.effektfaktor, ''],
+                    ['Laststrøm', session.data.laststrøm, 'A'],
+                    ['Afbryder type', session.data.afbryder_type, ''],
+                    ['Afbryder rating', session.data.afbryder_rating, 'A'],
+                    ['Installation metode', session.data.installation_metode, ''],
+                    ['Temperatur', session.data.temperatur, '°C'],
+                    ['Kabel gruppe', session.data.kabel_gruppe, ''],
+                    ['Kabel længde', session.data.kabel_længde, 'm'],
+                    ['Kabel type', session.data.kabel_type, ''],
+                    ['Beregnet kabelstrøm', session.data.beregnet_kabelstrøm, 'A']
+                ];
+                
+                const worksheet = XLSX.utils.aoa_to_sheet(data);
+                XLSX.utils.book_append_sheet(workbook, worksheet, session.name.substring(0, 31));
+            });
+            
+            // Export saved sessions
+            Object.values(sessions.saved).forEach(session => {
+                const data = [
+                    ['Session: ' + session.name + ' (GEMT)'],
+                    ['Type: ' + (session.voltageType === 'høj' ? 'Højspænding' : 'Lavspænding')],
+                    ['Oprettet: ' + new Date(session.created).toLocaleString('da-DK')],
+                    ['Sidst ændret: ' + new Date(session.lastModified).toLocaleString('da-DK')],
+                    [''],
+                    ['Parameter', 'Værdi', 'Enhed'],
+                    ['Spændingstype', session.data.spænding_type, ''],
+                    ['Effekt', session.data.effekt, 'kW'],
+                    ['Spænding', session.data.spænding, 'V'],
+                    ['Effektfaktor', session.data.effektfaktor, ''],
+                    ['Laststrøm', session.data.laststrøm, 'A'],
+                    ['Afbryder type', session.data.afbryder_type, ''],
+                    ['Afbryder rating', session.data.afbryder_rating, 'A'],
+                    ['Installation metode', session.data.installation_metode, ''],
+                    ['Temperatur', session.data.temperatur, '°C'],
+                    ['Kabel gruppe', session.data.kabel_gruppe, ''],
+                    ['Kabel længde', session.data.kabel_længde, 'm'],
+                    ['Kabel type', session.data.kabel_type, ''],
+                    ['Beregnet kabelstrøm', session.data.beregnet_kabelstrøm, 'A']
+                ];
+                
+                const worksheet = XLSX.utils.aoa_to_sheet(data);
+                XLSX.utils.book_append_sheet(workbook, worksheet, (session.name + '_GEMT').substring(0, 31));
+            });
+            
+            XLSX.writeFile(workbook, `MinidimSharp_Alle_Sessions_${new Date().toISOString().split('T')[0]}.xlsx`);
+            updateStatus('Alle sessions eksporteret til Excel');
+        }
+        
+        function importSessionsFromExcel() {
+            document.getElementById('sessions-import').click();
+        }
+        
+        function handleSessionsImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    
+                    workbook.SheetNames.forEach(sheetName => {
+                        const worksheet = workbook.Sheets[sheetName];
+                        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                        
+                        if (jsonData.length > 0) {
+                            // Parse session data from sheet
+                            const sessionName = jsonData[0] ? jsonData[0][0].replace('Session: ', '') : sheetName;
+                            const isSaved = sessionName.includes('(GEMT)');
+                            const cleanName = sessionName.replace(' (GEMT)', '');
+                            
+                            const importData = {};
+                            for (let i = 5; i < jsonData.length; i++) {
+                                const row = jsonData[i];
+                                if (row && row[0] && row[1] !== undefined) {
+                                    importData[row[0]] = row[1];
+                                }
+                            }
+                            
+                            const sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                            const newSession = {
+                                id: sessionId,
+                                name: cleanName,
+                                voltageType: importData['Spændingstype'] || 'lav',
+                                created: new Date().toISOString(),
+                                lastModified: new Date().toISOString(),
+                                data: {
+                                    spænding_type: importData['Spændingstype'] || 'lav',
+                                    effekt: parseFloat(importData['Effekt']) || 0.0,
+                                    spænding: parseFloat(importData['Spænding']) || 400.0,
+                                    effektfaktor: parseFloat(importData['Effektfaktor']) || 0.85,
+                                    laststrøm: parseFloat(importData['Laststrøm']) || 0.0,
+                                    afbryder_type: importData['Afbryder type'] || 'MCB',
+                                    afbryder_rating: parseFloat(importData['Afbryder rating']) || 0.0,
+                                    installation_metode: importData['Installation metode'] || 'A',
+                                    temperatur: parseFloat(importData['Temperatur']) || 30.0,
+                                    kabel_gruppe: parseInt(importData['Kabel gruppe']) || 1,
+                                    kabel_længde: parseFloat(importData['Kabel længde']) || 50.0,
+                                    kabel_type: importData['Kabel type'] || 'NYM-J 3x1.5',
+                                    beregnet_kabelstrøm: parseFloat(importData['Beregnet kabelstrøm']) || 0.0,
+                                    spændingsfald: 0.0,
+                                    advarsler: [],
+                                    fejl: []
+                                },
+                                formData: {
+                                    power: parseFloat(importData['Effekt']) || 0,
+                                    voltage: parseFloat(importData['Spænding']) || 400,
+                                    pf: parseFloat(importData['Effektfaktor']) || 0.85,
+                                    cbType: importData['Afbryder type'] || 'MCB',
+                                    schneiderModel: '',
+                                    cbRating: parseFloat(importData['Afbryder rating']) || 0,
+                                    installMethod: importData['Installation metode'] || 'A',
+                                    temperature: parseFloat(importData['Temperatur']) || 30,
+                                    cableGroup: parseInt(importData['Kabel gruppe']) || 1,
+                                    cableLength: parseFloat(importData['Kabel længde']) || 50.0,
+                                    cableType: importData['Kabel type'] || 'NYM-J 3x1.5',
+                                    loadDegree: 100
+                                }
+                            };
+                            
+                            if (isSaved) {
+                                sessions.saved[sessionId] = newSession;
+                            } else {
+                                sessions.active[sessionId] = newSession;
+                            }
+                        }
+                    });
+                    
+                    saveSessionsToStorage();
+                    updateStatus('Sessions importeret fra Excel');
+                    
+                } catch (error) {
+                    alert('Fejl ved import af sessions: ' + error.message);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+            
+            // Reset file input
+            event.target.value = '';
+        }
+
+        // Calculate all steps
+        function calculateAll() {
+            calculateLoadCurrent();
+            autoSelectRating();
+            calculateTemperatureCoefficient();
+            calculateCableGrouping();
+            calculateCableCurrent();
+            calculateLoadDegree();
+            checkConditions();
+            calculateVoltageDrop();
+            
+            updateStatus('Alle beregninger udført');
+        }
+
+        // Update status
+        function updateStatus(message) {
+            document.getElementById('status-text').textContent = message;
+        }
+
+        // Initialize when page loads
+        window.onload = function() {
+            init();
+            loadSessionsFromStorage();
+            updateSessionInfo();
+            
+            // Add auto-save on form changes
+            document.querySelectorAll('input, select').forEach(element => {
+                element.addEventListener('change', autoSaveCurrentSession);
+            });
+            
+            // Auto-save every 30 seconds
+            setInterval(autoSaveCurrentSession, 30000);
+        };
+
+        // Close table viewer when clicking outside
+        document.getElementById('table-viewer').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTable();
+            }
+        });
+    </script>
+</body>
+</html> 
